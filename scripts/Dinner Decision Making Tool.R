@@ -51,3 +51,9 @@ colnames(m) <- c(meal_data$dinners)
 
 row.names(m) <- c(ingredients)
 
+m
+
+# how to add data to the matrix
+
+
+
