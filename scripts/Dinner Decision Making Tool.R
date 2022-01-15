@@ -1,47 +1,44 @@
 library(dplyr)
-
 library(tidyverse)
 
-#dinner decision making tool; to aid in picking scrumptious favorites.
-
-#create vector list of meal names.. IDEA - interface with a known service. I.e. TASTE.com DB. 
-
-dinner_list <- c("Steak, Chips and Salad", "Homemade Pizza", "Spaghetti Bologna", 
+meal_database <- c("Steak, Chips and Salad", "Homemade Pizza", "Spaghetti Bologna", 
             "Butter Chicken", "Sweet Potato Pockets", "Lamb Backstrap Salad",
             "Mexican Bowls", "Pesto Pasta", "Lamb Chops, Mash and Veggies",
             "chilli and cornbread", "risotto", "Poke Bowls", 
-            "Reheat Meal", "Homemade Burgers")
+            "Reheat Meal", "Homemade Burgers", "One Pot Chicken","Chicken Schnitzel",
+            "Bacon and Blue Cheese Pie")
 
-takeout <- "Takeout"
+#Frequency of meals set by probabilities.
 
-new_recipe <- "New Recipe"
+probabilities <- c((rep(1/14,times=length(meal_database))),1/7, 1/28)
 
-#Assign probabilities of drawing certain meals from the sample function.
-
-#dinner_list majority of selections per fortnight, takeout @ once per week, new recipe @ once per month.
-
-probabilities <- c((rep(1/14,times=length(dinner_list))),1/7, 1/28)
-
-meal_data <- data.frame(dinners = c(dinner_list, takeout, new_recipe), probs = probabilities) %>%
+meal_data <- data.frame(dinners = c(meal_database, takeout, new_recipe), probs = probabilities) %>%
   mutate(index = 1:length(dinners))
 
 dinner_schedule <- sample(meal_data$index, 7, replace = FALSE, prob = probabilities)
 
-dinner_schedule
+dinner_schedule #sampled index list
 
-meal_data$dinners[dinner_schedule]
+meal_data$dinners[dinner_schedule] #converted to meal list
 
-#use index variable to match meals to ingredients. 
+# Testing probability distribution.
 
-ingredients <- c("avocado", "asparagus", "bread_gluten_free", "bread", "bacon","butter","broccolini",
-                 "carrots", "cheese", "cinnamon", "capsicum", "eggs", "eggplant", "hommus", "ham", "lemons",
-                 "limes", "lettuce", "mozzarella", "milk", "milk_oat", "mushrooms", "onion_brown", 
-                 "onion_red", "olives", "oil_cooking", "pasta", "pizza_bases", "pesto", "rocket",
-                 "chorizo", "salami", "cauliflower", "chicken_breast", "chicken_thigh", "chicken_schnitzel",
-                 "proscuitto", "pumpkin", "sour_cream", "lamb_chops", "pickled_ginger", "dried_shallots",
-                 "cucumber", "baby_cos_lettuce")
+test <- data.frame(meals = sample(meal_data$dinners, 10000, replace = TRUE, prob = probabilities))
 
-#link ingredients to index numbers. In order to pull a grocery list from the weekly dinner_schedule.
+test %>% ggplot() +
+  geom_histogram(aes(meals), stat = "count") +
+  theme(axis.text.x = element_text(angle = -90))
+
+#Intuitively feels okay.
+
+ingredients <- c("avocado", "asparagus", "bread_gluten_free", "bread", "bacon","butter",
+                 "broccolini","carrots", "cheese", "cinnamon", "capsicum", "eggs",
+                 "eggplant", "hommus", "ham", "lemons", "limes", "lettuce", "mozzarella",
+                 "milk", "milk_oat", "mushrooms", "onion_brown", "onion_red", "olives", 
+                 "oil_cooking", "pasta", "pizza_bases", "pesto", "rocket", "chorizo", "salami",
+                 "cauliflower", "chicken_breast", "chicken_thigh", "chicken_schnitzel",
+                 "proscuitto", "pumpkin", "sour_cream", "lamb_chops", "pickled_ginger", 
+                 "dried_shallots", "cucumber", "baby_cos_lettuce")
 
 #matrix - row names trialed as meal names or index for retrieval. Each meal will assign a 1 to it's req'd ingredient.
 
@@ -51,9 +48,5 @@ colnames(m) <- c(meal_data$dinners)
 
 row.names(m) <- c(ingredients)
 
-m
-
-# how to add data to the matrix
-
-
+#link ingredients to meals; to assist in pulling a grocery list.
 
