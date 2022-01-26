@@ -24,7 +24,9 @@ dinner_schedule <- sample(meal_data$index, 7, replace = FALSE, prob = probabilit
 
 dinner_schedule #sampled index list
 
-meal_data$meals[dinner_schedule] #converted to list of meals
+dinners <- meal_data$meals[dinner_schedule] #converted to list of meals
+
+dinners
 
 # test and plot probability distribution.
 
@@ -45,7 +47,8 @@ ingredients <- c("avocado", "asparagus", "bread_gluten_free", "bread", "bacon","
                  "cauliflower", "chicken_breast", "chicken_thigh", "chicken_schnitzel",
                  "proscuitto", "pumpkin", "sour_cream", "lamb_chops", "pickled_ginger", 
                  "dried_shallots", "cucumber", "baby_cos_lettuce","steak","tomatoes",
-                 "oven_chips","pizza_bases","cheese_mozzarella", "tomato_paste","pepperoni")
+                 "oven_chips","pizza_bases","cheese_mozzarella", "tomato_paste","pepperoni",
+                 "beef_mince","garlic","spaghetti","bolognese_sauce","tinned_baby_roma_tomatoes")
 
 #Build matrix with m x n dimensions, m/rows = ingredients and n/columns = meals.
 
@@ -64,4 +67,10 @@ m[c("rocket","steak","tomatoes","onion_red","oven_chips","avocado"),"Steak, Chip
 #Homemade Pizza
 m[c("pizza_bases","pumpkin","olives","cheese_mozzarella","tomato_paste","pepperoni"),"Homemade Pizza"] <- 1
 
+#Spaghetti Bologna
+m[c("beef_mince","onion_brown","garlic","spaghetti","bolognese_sauce","tinned_baby_roma_tomatoes"), "Spaghetti Bologna"] <- 1
+
+
+
+#ingredients list pulled from sample and matrix.
 
